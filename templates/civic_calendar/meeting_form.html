@@ -1,0 +1,6 @@
+{% load crispy_forms_tags %}
+<html>
+	<form action='{% url 'create' %}' method='POST'>
+		{{ form|crispy }}
+	</form>
+</html>
