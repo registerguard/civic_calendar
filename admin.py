@@ -9,7 +9,7 @@ class LocationAdmin(admin.ModelAdmin):
 
 
 class MeetingAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'start',)
+    list_display = ('__str__', 'start', 'created',)
     list_editable = ('start',)
 
 

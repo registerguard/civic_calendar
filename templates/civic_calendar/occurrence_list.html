@@ -1,5 +1,4 @@
-<html>
-<body>
+{% block content %}
 {% for jurisdiction in jurisdiction_list %}
 	<p><b>{{ jurisdiction.name }}</b></p>
 	{% for event_relation in occurrence_list %}
@@ -9,5 +8,4 @@
 		{% endif %}
 	{% endfor %}
 {% endfor %}
-</body>
-</html>
+{% endblock content %}

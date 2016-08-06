@@ -19,6 +19,11 @@ urlpatterns = [
         view=views.MeetingUpdateView.as_view(),
         name='update',
     ),
+    url(
+        regex=r'^(?P<pk>\d+)/$',
+        view=views.MeetingDetailView.as_view(),
+        name='meeting-detail',
+    ),
     # url(
     #     regex=r'^(?P<calendar_slug>\w+)/$',
     #     view=CalendarByPeriodsView.as_view(),

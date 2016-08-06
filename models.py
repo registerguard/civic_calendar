@@ -63,13 +63,14 @@ class Meeting(models.Model):
     contact_phone = models.CharField(max_length=64, blank=True)
     contact_email = models.EmailField(blank=True)
     website = models.CharField(max_length=256, blank=True)
+    created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return u'({0}) {1}, {2} meeting'.format(self.entity.jurisdiction.name, self.entity.name, self.start.strftime('%A (%Y-%m-%d)'))
 
     def get_absolute_url(self):
         # page 109
-        return reverse()
+        return reverse('meeting-detail', kwargs={'pk': self.pk})
 
     def save(self, *args, **kwargs):
         new_meeting = False
