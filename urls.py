@@ -10,7 +10,7 @@ urlpatterns = [
         name='upcoming-occurrences',
     ),
     url(
-        regex=r'^add/',
+        regex=r'^add/$',
         view=views.MeetingCreateView.as_view(),
         name='create',
     ),
