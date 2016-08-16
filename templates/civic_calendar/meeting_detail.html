@@ -1,6 +1,8 @@
-{% extends '_base.html' %}
+{% extends 'civic_calendar/_base.html' %}
 
 {% block content %}
-	{{ meeting }}
-	{{ object }}
+	<p>{{ meeting }}</p>
+    <p>{{ meeting.start }}</p>
+	<p>{{ object }}</p>
+    <p>{{ object.start }}</p>
 {% endblock content %}
