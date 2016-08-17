@@ -1,7 +1,7 @@
 {% extends 'civic_calendar/_base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-	<form action="{% url 'create' %}" method="POST">
+	<form action="" method="POST">
 		{% csrf_token %}
 		
 		{{ form|crispy }}
