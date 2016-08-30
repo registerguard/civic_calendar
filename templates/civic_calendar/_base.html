@@ -2,8 +2,8 @@
 	<head>
 	</head>
 	<body>
-		<p>Hello {{ user.first_name }} {{ user.last_name }}!</p>
-		
+		{% if user.is_authenticated %}<p>Hello {{ user.first_name }} {{ user.last_name }}! <a href="{% url 'logout' %}">logout</a></p>{% endif %}
+
 		{% block content %}
 		{% endblock content %}
 		

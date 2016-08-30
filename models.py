@@ -1,4 +1,4 @@
-# http://stackoverflow.com/questions/27239783/how-to-use-django-scheduler-app-in-existing-app
+# ** http://stackoverflow.com/questions/27239783/how-to-use-django-scheduler-app-in-existing-app
 # http://stackoverflow.com/questions/24327121/using-the-django-scheduler-app-with-your-own-models
 # future
 from __future__ import unicode_literals
@@ -72,28 +72,28 @@ class Meeting(models.Model):
         # page 109
         return reverse('meeting-detail', kwargs={'pk': self.pk})
 
-    def save(self, *args, **kwargs):
-        new_meeting = False
-        if not self.id:
-            new_meeting = True
-        super(Meeting, self).save(*args, **kwargs)
-        end = self.start + datetime.timedelta(minutes=119)
-        if new_meeting:
-            event = Event(
-                start=self.start,
-                end=end,
-                title='{0} meeting'.format(self.entity.name),
-                description=self.agenda,
-            )
-            event.save()
-            er = EventRelation.objects.create_relation(event, self)
-            er.save()
-            cal = Calendar.objects.get(name='civic')
-            cal.events.add(event)
-        else:
-            event = Event.objects.get_for_object(self)[0]
-            event.start = self.start
-            event.end = end
-            event.title = '{0} meeting'.format(self.entity.name)
-            event.description = self.agenda
-            event.save()
+    # def save(self, *args, **kwargs):
+    #     new_meeting = False
+    #     if not self.id:
+    #         new_meeting = True
+    #     super(Meeting, self).save(*args, **kwargs)
+    #     end = self.start + datetime.timedelta(minutes=119)
+    #     if new_meeting:
+    #         event = Event(
+    #             start=self.start,
+    #             end=end,
+    #             title='{0} meeting'.format(self.entity.name),
+    #             description=self.agenda,
+    #         )
+    #         event.save()
+    #         er = EventRelation.objects.create_relation(event, self)
+    #         er.save()
+    #         cal = Calendar.objects.get(name='civic')
+    #         cal.events.add(event)
+    #     else:
+    #         event = Event.objects.get_for_object(self)[0]
+    #         event.start = self.start
+    #         event.end = end
+    #         event.title = '{0} meeting'.format(self.entity.name)
+    #         event.description = self.agenda
+    #         event.save()
