@@ -10,8 +10,8 @@ import datetime
 from schedule.models import Event, EventRelation, Calendar
 
 #Django
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
+# from django.contrib.contenttypes.fields import GenericForeignKey
+# from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible

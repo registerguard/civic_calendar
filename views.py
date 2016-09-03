@@ -9,6 +9,7 @@ from .forms import MeetingCreateViewForm
 from .models import Jurisdiction, Meeting
 
 import datetime
+import operator
 
 
 class SchedulerSavingMixin(object):
@@ -57,6 +58,9 @@ class MeetingUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class MeetingListView(LoginRequiredMixin, ListView):
+    '''
+    For entities to see a list of their own meetings.
+    '''
     queryset = Meeting.objects.filter()
 
 
@@ -64,27 +68,40 @@ class MeetingDetailView(LoginRequiredMixin, DetailView):
     model = Meeting
     fields = '__all__'
 
+# def today_and_tomorrow():
+#     return datetime.datetime.today()
+#     # today_and_tomorrow = datetime.datetime(2016,6,21)
+
 
 class OccurrenceListView(ListView):
-    context_object_name = 'occurrence_list'
+    '''
+    For creating the print/online meetings list
+    '''
+    context_object_name = 'event_relation_list'
     template_name = 'civic_calendar/occurrence_list.html'
-    today_and_tomorrow = datetime.datetime.today()
-    # today_and_tomorrow = datetime.datetime(2016,6,21)
-    my_events = Event.objects.all()
-    upcoming = Period(my_events, today_and_tomorrow, today_and_tomorrow+datetime.timedelta(days=2))
-    occurrence_list = upcoming.get_occurrences()
-    event_list = [ occurrence.event for occurrence in occurrence_list ]
-
-    # queryset = EventRelation.objects.select_related('content_type').filter(event_id__in=event_list)
-    queryset = EventRelation.objects.prefetch_related('content_object__entity__jurisdiction').filter(event_id__in=event_list)
-
-    jurisdiction_set = set()
-    for jurisdiction in queryset:
-        jurisdiction_set.add(jurisdiction.content_object.entity.jurisdiction)
-    jurisdiction_list = list(jurisdiction_set)
+    # model = EventRelation
 
     # Add relevant Jurisdictions to response context
-    def get_context_data(self, **kwargs):
-        context = super(OccurrenceListView, self).get_context_data(**kwargs)
-        context['jurisdiction_list'] = self.jurisdiction_list
-        return context
+    def get_queryset(self):
+        today_and_tomorrow = datetime.datetime.today()
+        my_events = Event.objects.all()
+        upcoming = Period(my_events, today_and_tomorrow, today_and_tomorrow+datetime.timedelta(days=2))
+        occurrence_list = upcoming.get_occurrences()
+        event_list = [ occurrence.event for occurrence in occurrence_list ]
+        # figure out an order_by based on content_object.entity.jurisdiction.name
+        # Can't
+        # But! ...
+        # ordered = sorted(queryset, key=operator.attrgetter('content_object.entity.jurisdiction.name'))
+        # http://stackoverflow.com/questions/2412770/good-ways-to-sort-a-queryset-django
+        queryset = EventRelation.objects.prefetch_related('content_object__entity__jurisdiction').filter(event_id__in=event_list)
+        ordered = sorted(queryset, key=operator.attrgetter('content_object.entity.jurisdiction.name', 'event.start'))
+        return ordered
+
+    # def get_context_data(self):
+    #     jurisdiction_set = set()
+    #     for jurisdiction in queryset:
+    #         jurisdiction_set.add(jurisdiction.content_object.entity.jurisdiction)
+    #     jurisdiction_list = list(jurisdiction_set)
+    #     context = super(OccurrenceListView, self).get_context_data(**kwargs)
+    #     context['jurisdiction_list'] = jurisdiction_list
+    #     return context

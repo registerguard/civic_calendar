@@ -1,13 +1,9 @@
 {% extends 'civic_calendar/_base.html' %}
 
 {% block content %}
-{% for jurisdiction in jurisdiction_list %}
-	<p><b>{{ jurisdiction.name }}</b></p>
-	{% for event_relation in occurrence_list %}
-		{% if event_relation.content_object.entity.jurisdiction.name == jurisdiction.name %}
-			{% ifchanged %}{{ event_relation.content_object.start|date:'l'|upper }}<br>{% endifchanged %}
-			<b>{{ event_relation.content_object.entity.name }}</b> — {{ event_relation.content_object.start|date:'P' }}, {{ event_relation.content_object.location.name }}, {{ event_relation.content_object.location.address }}{% if event_relation.content_object.location.city != jurisdiction.name and event_relation.content_object.location.city not in event_relation.content_object.location.name %}, {{ event_relation.content_object.location.city }}{% endif %}.{% if event_relation.content_object.agenda %} {{ event_relation.content_object.agenda }}{% endif %}{% if event_relation.content_object.contact_phone %} {{ event_relation.content_object.contact_phone }}.{% endif %}{% if event_relation.content_object.contact_email %} {{ event_relation.content_object.contact_email }}.{% endif %}<br>
-		{% endif %}
-	{% endfor %}
+{% for event_relation in event_relation_list %}
+	{% ifchanged %}<p><b>{{ event_relation.content_object.entity.jurisdiction }}</b></p>{% endifchanged %}
+	{% ifchanged %}{{ event_relation.content_object.start|date:'l'|upper }}<br>{% endifchanged %}
+	<b>{{ event_relation.content_object.entity.name }}</b> — {{ event_relation.content_object.start|date:'P' }}, {{ event_relation.content_object.location.name }}, {{ event_relation.content_object.location.address }}{% if event_relation.content_object.location.city != jurisdiction.name and event_relation.content_object.location.city not in event_relation.content_object.location.name %}, {{ event_relation.content_object.location.city }}{% endif %}.{% if event_relation.content_object.agenda %} {{ event_relation.content_object.agenda }}{% endif %}{% if event_relation.content_object.contact_phone %} {{ event_relation.content_object.contact_phone }}.{% endif %}{% if event_relation.content_object.contact_email %} {{ event_relation.content_object.contact_email }}.{% endif %}<br>
 {% endfor %}
 {% endblock content %}
