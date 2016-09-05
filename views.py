@@ -56,12 +56,23 @@ class MeetingUpdateView(LoginRequiredMixin, UpdateView):
     model = Meeting
     fields = '__all__'
 
+    def form_valid(self, form):
+        er = EventRelation.objects.get(object_id=self.object.id)
+        event = Event.objects.get(pk=er.event.id)
+        event.start = form.instance.start
+        event.end = form.instance.start + datetime.timedelta(minutes=119)
+        event.description = form.instance.agenda
+        event.save()
+        return super(MeetingUpdateView, self).form_valid(form)
 
 class MeetingListView(LoginRequiredMixin, ListView):
     '''
     For entities to see a list of their own meetings.
     '''
-    queryset = Meeting.objects.filter()
+    template_name = 'civic_calendar/eventrelation_list.html'
+
+    def get_queryset(self):
+        return EventRelation.objects.filter(event__creator=self.request.user)
 
 
 class MeetingDetailView(LoginRequiredMixin, DetailView):
@@ -75,7 +86,7 @@ class MeetingDetailView(LoginRequiredMixin, DetailView):
 
 class OccurrenceListView(ListView):
     '''
-    For creating the print/online meetings list
+    Display online meetings list/outputs InDesign-formatted text
     '''
     context_object_name = 'event_relation_list'
     template_name = 'civic_calendar/occurrence_list.html'

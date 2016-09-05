@@ -1,0 +1,13 @@
+{% extends 'civic_calendar/_base.html' %}
+
+{% block content %}
+    <ul>
+    {% for eventrelation in object_list %}
+        <li>
+            <a href="{% url 'update' eventrelation.object_id %}">{{ eventrelation.content_object }}</a><br>
+            {{ eventrelation.object_id }}<br>
+            {{ eventrelation.event.creator.first_name }} {{ eventrelation.event.creator.last_name }}<br>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock content %}
