@@ -25,6 +25,11 @@ urlpatterns = [
         name='update',
     ),
     url(
+        regex=r'^(?P<pk>\d+)/delete/$',
+        view=views.MeetingDeleteView.as_view(),
+        name='delete',
+    ),
+    url(
         regex=r'^(?P<pk>\d+)/$',
         view=views.MeetingDetailView.as_view(),
         name='meeting-detail',

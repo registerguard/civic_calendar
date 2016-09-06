@@ -5,7 +5,8 @@
     {% for eventrelation in object_list %}
         <li>
             <a href="{% url 'update' eventrelation.object_id %}">{{ eventrelation.content_object }}</a><br>
-            {{ eventrelation.object_id }}<br>
+            Meeting ID: {{ eventrelation.object_id }}<br>
+            <a href="{% url 'delete' eventrelation.object_id %}">Delete</a><br>
             {{ eventrelation.event.creator.first_name }} {{ eventrelation.event.creator.last_name }}<br>
         </li>
     {% endfor %}

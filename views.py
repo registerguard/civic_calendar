@@ -2,7 +2,9 @@
 # http://django.cowhite.com/blog/adding-and-editing-model-objects-using-django-class-based-views-and-forms/
 from braces.views import LoginRequiredMixin
 
-from django.views.generic import CreateView, UpdateView, DetailView, ListView
+from django.core.urlresolvers import reverse_lazy
+from django.views.generic import CreateView, UpdateView, DetailView, ListView, \
+    DeleteView
 from schedule.models import Calendar, Event, EventRelation
 from schedule.periods import Period
 from .forms import MeetingCreateViewForm
@@ -79,10 +81,23 @@ class MeetingDetailView(LoginRequiredMixin, DetailView):
     model = Meeting
     fields = '__all__'
 
-# def today_and_tomorrow():
-#     return datetime.datetime.today()
-#     # today_and_tomorrow = datetime.datetime(2016,6,21)
 
+class MeetingDeleteView(LoginRequiredMixin, DeleteView):
+    '''
+    Deleting schedule.Event removes relevant:
+        schedule.EventRelation
+        schedule.Occurrence
+        schedule.Event
+        
+        ... so just need to delete schedule.Event and civic_calendar.Meeting
+    '''
+    success_url = reverse_lazy('meeting-list')
+    template_name = 'civic_calendar/confirm_delete.html'
+
+    def get_object(self):
+        er = EventRelation.objects.get(pk=self.kwargs['pk'])
+        event = Event.objects.get(pk=er.event.id)
+        event.delete()
 
 class OccurrenceListView(ListView):
     '''

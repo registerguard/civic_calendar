@@ -12,6 +12,7 @@ from schedule.models import Event, EventRelation, Calendar
 #Django
 # from django.contrib.contenttypes.fields import GenericForeignKey
 # from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericRelation
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
@@ -64,6 +65,9 @@ class Meeting(models.Model):
     contact_email = models.EmailField(blank=True)
     website = models.CharField(max_length=256, blank=True)
     created = models.DateTimeField(auto_now_add=True, null=True)
+    # Creates the "reverse" relationship
+    # https://docs.djangoproject.com/en/1.9/ref/contrib/contenttypes/#s-reverse-generic-relations
+    event_relation = GenericRelation(EventRelation)
 
     def __str__(self):
         return u'({0}) {1}, {2} meeting'.format(self.entity.jurisdiction.name, self.entity.name, self.start.strftime('%A (%Y-%m-%d)'))
