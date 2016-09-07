@@ -97,8 +97,11 @@ class MeetingDeleteView(LoginRequiredMixin, DeleteView):
     model = EventRelation
 
     def delete(self, request, *args, **kwargs):
-        # super(MeetingDeleteView, self).delete(*args, **kwargs)
         self.object = self.get_object()
+        meeting = Meeting.objects.get(pk=self.object.content_object.id)
+        meeting.delete()
+        # Delete Event 2nd, as deletingn it deletes EventRelation as well
+        # and meeting.delete() makes use of MeetingRelation.
         event = Event.objects.get(pk=self.object.event.id)
         event.delete()
         self.object.delete()
