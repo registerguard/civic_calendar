@@ -3,6 +3,7 @@
 from braces.views import LoginRequiredMixin
 
 from django.core.urlresolvers import reverse_lazy
+from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, UpdateView, DetailView, ListView, \
     DeleteView
 from schedule.models import Calendar, Event, EventRelation
@@ -93,11 +94,15 @@ class MeetingDeleteView(LoginRequiredMixin, DeleteView):
     '''
     success_url = reverse_lazy('meeting-list')
     template_name = 'civic_calendar/confirm_delete.html'
+    model = EventRelation
 
-    def get_object(self):
-        er = EventRelation.objects.get(pk=self.kwargs['pk'])
-        event = Event.objects.get(pk=er.event.id)
+    def delete(self, request, *args, **kwargs):
+        # super(MeetingDeleteView, self).delete(*args, **kwargs)
+        self.object = self.get_object()
+        event = Event.objects.get(pk=self.object.event.id)
         event.delete()
+        self.object.delete()
+        return HttpResponseRedirect(self.get_success_url())
 
 class OccurrenceListView(ListView):
     '''

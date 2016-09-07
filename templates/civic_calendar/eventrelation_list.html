@@ -6,7 +6,8 @@
         <li>
             <a href="{% url 'update' eventrelation.object_id %}">{{ eventrelation.content_object }}</a><br>
             Meeting ID: {{ eventrelation.object_id }}<br>
-            <a href="{% url 'delete' eventrelation.object_id %}">Delete</a><br>
+            EventRelation ID: {{ eventrelation.id }}<br>
+            <a href="{% url 'delete' eventrelation.id %}">Delete</a><br>
             {{ eventrelation.event.creator.first_name }} {{ eventrelation.event.creator.last_name }}<br>
         </li>
     {% endfor %}
