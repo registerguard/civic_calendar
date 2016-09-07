@@ -35,8 +35,8 @@ class SchedulerSavingMixin(object):
 
 class MeetingCreateView(LoginRequiredMixin, CreateView):
     model = Meeting
-    fields = '__all__'
-#     form_class = MeetingCreateViewForm
+    # fields = '__all__'
+    form_class = MeetingCreateViewForm
 
     def form_valid(self, form):
         meeting = form.save()
