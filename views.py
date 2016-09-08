@@ -38,6 +38,12 @@ class MeetingCreateView(LoginRequiredMixin, CreateView):
     # fields = '__all__'
     form_class = MeetingCreateViewForm
 
+    # passing request.user to MeetingCreateViewForm
+    def get_form_kwargs(self):
+        kwargs = super(MeetingCreateView, self).get_form_kwargs()
+        kwargs.update({'owner': self.request.user})
+        return kwargs
+
     def form_valid(self, form):
         meeting = form.save()
         end = meeting.start + datetime.timedelta(minutes=119)

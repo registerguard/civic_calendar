@@ -12,6 +12,7 @@ from schedule.models import Event, EventRelation, Calendar
 #Django
 # from django.contrib.contenttypes.fields import GenericForeignKey
 # from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -30,6 +31,7 @@ class Jurisdiction(models.Model):
 @python_2_unicode_compatible
 class Entity(models.Model):
     name = models.CharField(max_length=255)
+    owner = models.ForeignKey(User, null=True)
     jurisdiction = models.ForeignKey(Jurisdiction)
 
     class Meta:
