@@ -3,7 +3,7 @@
 from braces.views import LoginRequiredMixin
 
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.views.generic import CreateView, UpdateView, DetailView, ListView, \
     DeleteView
 from schedule.models import Calendar, Event, EventRelation
@@ -105,13 +105,16 @@ class MeetingDeleteView(LoginRequiredMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         meeting = Meeting.objects.get(pk=self.object.content_object.id)
-        meeting.delete()
-        # Delete Event 2nd, as deletingn it deletes EventRelation as well
-        # and meeting.delete() makes use of MeetingRelation.
         event = Event.objects.get(pk=self.object.event.id)
-        event.delete()
-        self.object.delete()
-        return HttpResponseRedirect(self.get_success_url())
+        if event.creator == request.user:
+            meeting.delete()
+            # Delete Event 2nd, as deletingn it deletes EventRelation as well
+            # and meeting.delete() makes use of MeetingRelation.
+            event.delete()
+            self.object.delete()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            raise Http404('You are not the owner of this event.')
 
 class OccurrenceListView(ListView):
     '''
