@@ -1,7 +1,33 @@
+<!doctype html>
 <html>
 	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>{{ title }}</title>
+
+		<meta name="description" content="{{ description }}">
+		<meta name="keywords" content="{{ content }}">
+
+		<!-- [BEGIN] Zeppelin -->
+		<link rel="stylesheet" href="http://static.registerguard.com/v5/zeppelin/prod/0.1.0/20140911/1/styles/zeppelin.min.css">
+		<script src="http://static.registerguard.com/v5/zeppelin/prod/0.1.0/20140911/1/scripts/zeppelin.min.js"></script>
+		<!-- [END] Zeppelin -->
+
+		<style>
+			
+			/* Demo only: */
+			p { margin-top: 0; }
+			
+		</style>
+
 	</head>
 	<body>
+
+		<header id="zeppelin" role="banner">
+			<h6><a href="http://registerguard.com">The Register-Guard</a></h6>
+			<p>Lorem <a href="#">ipsum dolor</a></p>
+		</header>
+
 		{% if user.is_authenticated %}<p>Hello {{ user.first_name }} {{ user.last_name }}! <a href="{% url 'logout' %}">logout</a></p>{% endif %}
 
 		{% block content %}
