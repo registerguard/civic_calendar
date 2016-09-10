@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Meeting, Entity
+from .models import Meeting, Entity, Location
 
 class MeetingCreateViewForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -10,6 +10,7 @@ class MeetingCreateViewForm(forms.ModelForm):
         # base class method
         super(MeetingCreateViewForm, self).__init__(*args, **kwargs)
         self.fields['entity'].queryset = Entity.objects.filter(owner=owner).order_by('name')
+        self.fields['location'].queryset = Location.objects.order_by('name')
 
     # def __init__(self, *args, **kwargs):
     #     self.request = kwargs.pop('request', None)
