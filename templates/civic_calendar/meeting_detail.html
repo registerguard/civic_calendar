@@ -1,8 +1,10 @@
 {% extends 'civic_calendar/_base.html' %}
 
 {% block content %}
+<div class="container" role="main">
 	<p>{{ meeting }}</p>
     <p>{{ meeting.start }}</p>
 	<p>{{ object }}</p>
     <p>{{ object.start }}</p>
+</div> <!-- /.container -->
 {% endblock content %}

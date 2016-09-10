@@ -1,15 +1,16 @@
-{% extends 'dox/bulldog.html' %}
+{% extends 'civic_calendar/_base.html' %}
 
 {% block content %}
-    <ul>
-    {% for eventrelation in object_list %}
-        <li>
-            <a href="{% url 'update' eventrelation.object_id %}">{{ eventrelation.content_object }}</a><br>
-            Meeting ID: {{ eventrelation.object_id }}<br>
-            EventRelation ID: {{ eventrelation.id }}<br>
-            <a href="{% url 'delete' eventrelation.id %}">Delete</a><br>
-            {{ eventrelation.event.creator.first_name }} {{ eventrelation.event.creator.last_name }}<br>
-        </li>
-    {% endfor %}
-    </ul>
+    <div class="container" role="main">
+        <div class="list-group">
+        {% for eventrelation in object_list %}
+            <a class="list-group-item" href="{% url 'update' eventrelation.object_id %}">
+                <h4 class="list-group-item-heading">{{ eventrelation.content_object }}</h4>
+                <p class="list-group-item-text">
+                {{ eventrelation.event.creator.first_name }} {{ eventrelation.event.creator.last_name }}</p>
+            </a>
+            <a class="list-group-item" href="{% url 'delete' eventrelation.id %}">Delete</a>
+        {% endfor %}
+        </div><!-- /.list-group -->
+    </div> <!-- /.container -->
 {% endblock content %}

@@ -1,8 +1,10 @@
-{% extends 'dox/bulldog.html' %}
+{% extends 'civic_calendar/_base.html' %}
 
 {% block content %}
-<form action="" method="post">{% csrf_token %}
-    <p>Are you sure you want to delete "{{ object }}"?</p>
-    <input type="submit" value="Confirm" />
-</form>
+<div class="container" role="main">
+    <form action="" method="post">{% csrf_token %}
+        <p>Are you sure you want to delete "{{ object }}"?</p>
+        <input type="submit" value="Confirm" />
+    </form>
+</div> <!-- /.container -->
 {% endblock content %}

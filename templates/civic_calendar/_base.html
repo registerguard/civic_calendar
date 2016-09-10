@@ -1,12 +1,17 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
 		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>{{ title }}</title>
 
 		<meta name="description" content="{{ description }}">
 		<meta name="keywords" content="{{ content }}">
+		<title>{{ title }}</title>
+
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
 		<!-- [BEGIN] Zeppelin -->
 		<link rel="stylesheet" href="http://static.registerguard.com/v5/zeppelin/prod/0.1.0/20140911/1/styles/zeppelin.min.css">
@@ -14,9 +19,8 @@
 		<!-- [END] Zeppelin -->
 
 		<style>
-			
-			/* Demo only: */
-			p { margin-top: 0; }
+			/* Necessary to get page top below z-indexed js page-top banner */
+			body { padding-top: 50px; }
 			
 		</style>
 
@@ -25,13 +29,15 @@
 
 		<header id="zeppelin" role="banner">
 			<h6><a href="http://registerguard.com">The Register-Guard</a></h6>
-			<p>Lorem <a href="#">ipsum dolor</a></p>
+			<p><a href="#">civic calendar</a><span style="float:right;">{% if user.is_authenticated %}Hello, {{ user.first_name }} {{ user.last_name }}! | <a href="{% url 'logout' %}">logout</a></span>{% endif %}</p>
+			
 		</header>
-
-		{% if user.is_authenticated %}<p>Hello {{ user.first_name }} {{ user.last_name }}! <a href="{% url 'logout' %}">logout</a></p>{% endif %}
 
 		{% block content %}
 		{% endblock content %}
 		
+		<!-- At the end for faster loading -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script>window.jQuery || document.write('<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"><\/script>')</script>
 	</body>
 </html>
