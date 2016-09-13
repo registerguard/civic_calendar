@@ -1,13 +1,41 @@
 {% extends 'civic_calendar/_base.html' %}
+{% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
+
+	{% comment %}
+	hack required by bootstrap-datetimepicker
+	https://github.com/Eonasdan/bootstrap-datetimepicker/issues/1142
+	{% endcomment %}
+	<style>
+		#div_id_start .controls {
+			position: relative;
+		}
+	</style>
+
 	<div class="container" role="main">
+
+		{% if user.is_authenticated %}
+		<div class="well">
+			<p>Hello, {{ user.first_name }} {{ user.last_name }}!</p>
+		</div>
+		{% endif %}
+
 		<form action="" method="POST">
 			{% csrf_token %}
-			
 			{{ form|crispy }}
-			
 			<input type="submit" value="Save">
 		</form>
+
 	</div> <!-- /.container -->
 {% endblock content %}
+
+{% block js %}
+	{{ form.media }}
+	<script>
+		$(function () {
+			$('#id_start').datetimepicker();
+			$('#id_start').data("DateTimePicker").format('YYYY-MM-DD HH:mm');
+		});
+	</script>
+{% endblock js %}

@@ -2,6 +2,15 @@
 
 {% block content %}
     <div class="container" role="main">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {% if user.is_authenticated %}Hello, {{ user.first_name }} {{ user.last_name }}!{% endif %}
+            </div>
+            <div class="panel-body">
+                <a href="{% url 'create' %}">Add a meeting</a>.
+            </div>
+        </div>
+        
         <div class="list-group">
         {% for eventrelation in object_list %}
             <a class="list-group-item" href="{% url 'update' eventrelation.object_id %}">

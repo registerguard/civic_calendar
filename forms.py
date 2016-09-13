@@ -2,6 +2,14 @@ from django import forms
 
 from .models import Meeting, Entity, Location
 
+class CalendarDateTimeWidget(forms.DateTimeInput):
+    class Media:
+        js = (
+            'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.0/moment.min.js',
+            'js/bootstrap-datetimepicker.min.js',
+        )
+
+
 class MeetingCreateViewForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         # passed by get_form_kwargs override in views.MeetingCreateView
@@ -19,6 +27,10 @@ class MeetingCreateViewForm(forms.ModelForm):
     class Meta:
         model = Meeting
         fields = '__all__'
+        widgets = {
+            'start': CalendarDateTimeWidget(),
+        }
+
 
     # def save(self, creator, *args, **kwargs):
     #     f = super(MeetingCreateViewForm, self).save(creator, *args, **kwargs)
