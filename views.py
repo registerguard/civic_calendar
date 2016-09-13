@@ -35,7 +35,6 @@ class SchedulerSavingMixin(object):
 
 class MeetingCreateView(LoginRequiredMixin, CreateView):
     model = Meeting
-    # fields = '__all__'
     form_class = MeetingCreateViewForm
 
     # passing request.user to MeetingCreateViewForm
@@ -63,7 +62,12 @@ class MeetingCreateView(LoginRequiredMixin, CreateView):
 
 class MeetingUpdateView(LoginRequiredMixin, UpdateView):
     model = Meeting
-    fields = '__all__'
+    form_class = MeetingCreateViewForm
+
+    def get_form_kwargs(self):
+        kwargs = super(MeetingUpdateView, self).get_form_kwargs()
+        kwargs.update({'owner': self.request.user})
+        return kwargs
 
     def form_valid(self, form):
         er = EventRelation.objects.get(object_id=self.object.id)
