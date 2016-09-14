@@ -82,6 +82,7 @@ class MeetingListView(LoginRequiredMixin, ListView):
     '''
     For entities to see a list of their own meetings.
     '''
+    login_url = reverse_lazy('login')
     template_name = 'civic_calendar/eventrelation_list.html'
 
     def get_queryset(self):
