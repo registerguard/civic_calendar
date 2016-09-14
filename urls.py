@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.contrib.auth.views import login, logout
 from schedule.views import CalendarByPeriodsView
 
 from . import views
@@ -34,6 +35,8 @@ urlpatterns = [
         view=views.MeetingDetailView.as_view(),
         name='meeting-detail',
     ),
+    url(r'^accounts/login/$', login, name='login'),
+    url(r'^accounts/logout/$', logout, {'next_page': '/civic/'}, name='logout'),
     # url(
     #     regex=r'^(?P<calendar_slug>\w+)/$',
     #     view=CalendarByPeriodsView.as_view(),
