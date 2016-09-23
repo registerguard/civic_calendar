@@ -4,6 +4,7 @@ from braces.views import LoginRequiredMixin
 
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect, Http404
+from django.shortcuts import get_object_or_404
 from django.views.generic import CreateView, UpdateView, DetailView, ListView, \
     DeleteView
 from schedule.models import Calendar, Event, EventRelation
@@ -56,7 +57,7 @@ class MeetingCreateView(LoginRequiredMixin, CreateView):
         event.save()
         er = EventRelation.objects.create_relation(event, meeting)
         er.save()
-        cal = Calendar.objects.get(name='civic')
+        cal = get_object_or_404(Calendar, name='civic')
         cal.events.add(event)
         return super(MeetingCreateView, self).form_valid(form)
 
