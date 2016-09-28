@@ -57,7 +57,12 @@ class MeetingCreateView(LoginRequiredMixin, CreateView):
         event.save()
         er = EventRelation.objects.create_relation(event, meeting)
         er.save()
-        cal = get_object_or_404(Calendar, name='civic')
+        try:
+            cal = Calendar.objects.get(name='civil')
+        except Calendar.DoesNotExist:
+            error_msg = "Calendar object not found."
+            raise Calendar.DoesNotExist(error_msg)
+            
         cal.events.add(event)
         return super(MeetingCreateView, self).form_valid(form)
 
