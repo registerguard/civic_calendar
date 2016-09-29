@@ -34,7 +34,6 @@
 	{{ form.media }}
 	<script>
 		$(function () {
-//			$('#id_start').data("DateTimePicker").format('YYYY-MM-DD HH:mm');
 			$('#id_start').datetimepicker({
 				defaultDate: "{{ form.start.value|date:'Y-m-d H:i' }}",
 				format: "YYYY-MM-DD HH:mm"
