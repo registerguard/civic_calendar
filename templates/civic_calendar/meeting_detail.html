@@ -1,10 +1,9 @@
 {% extends 'civic_calendar/_base.html' %}
 
 {% block content %}
+{% comment %}FWIW, in this context, either {{ object }} or {{ meeting }} will work.{% endcomment %}
 <div class="container" role="main">
 	<p>{{ meeting }}</p>
 	<p>{{ meeting.start }}</p>
-	<p>{{ object }}</p>
-	<p>{{ object.start }}</p>
 </div> <!-- /.container -->
 {% endblock content %}
