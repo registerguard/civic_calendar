@@ -21,6 +21,10 @@
 		</div>
 		{% endif %}
 
+		<div class="alert alert-info">
+			<b>Note:</b> Print submission deadline is noon Pacific two business days prior to the meeting date.
+		</div>
+
 		<form action="" method="POST">
 			{% csrf_token %}
 			{{ form|crispy }}
