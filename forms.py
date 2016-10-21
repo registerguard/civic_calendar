@@ -1,5 +1,5 @@
 from django import forms
-
+from django.utils.translation import ugettext_lazy as _
 from .models import Meeting, Entity, Location
 
 class CalendarDateTimeWidget(forms.DateTimeInput):
@@ -29,6 +29,9 @@ class MeetingCreateViewForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'start': CalendarDateTimeWidget(),
+        }
+        help_texts = {
+            'start': _('Use military time.'),
         }
 
 
