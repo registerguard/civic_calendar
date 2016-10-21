@@ -15,6 +15,15 @@
         {% for eventrelation in object_list %}
             <a class="list-group-item" href="{% url 'update' eventrelation.object_id %}">
                 <h4 class="list-group-item-heading">{{ eventrelation.content_object }}</h4>
+                <p class="list-group-item-text">{{ eventrelation.content_object.entity.name }}</p>
+                <p class="list-group-item-text">{{ eventrelation.content_object.start }}</p>
+                <p class="list-group-item-text">{{ eventrelation.content_object.location.name }}</p>
+                <p class="list-group-item-text">{{ eventrelation.content_object.location.address }}</p>
+                <p class="list-group-item-text">{{ eventrelation.content_object.location.city }}</p>
+                <p class="list-group-item-text">{{ eventrelation.content_object.agenda }}</p>
+                <p class="list-group-item-text">{{ eventrelation.content_object.website }}</p>
+                <p class="list-group-item-text">{{ eventrelation.content_object.contact_email }}</p>
+                <p class="list-group-item-text">{{ eventrelation.content_object.contact_phone }}</p>
                 <p class="list-group-item-text">
                 {{ eventrelation.event.creator.first_name }} {{ eventrelation.event.creator.last_name }}</p>
             </a>
