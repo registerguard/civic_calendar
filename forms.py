@@ -31,7 +31,7 @@ class MeetingCreateViewForm(forms.ModelForm):
             'start': CalendarDateTimeWidget(),
         }
         help_texts = {
-            'start': _('Use military time.'),
+            'start': _('<div class="alert alert-info"><b>Note:</b> Use military time.</div>'),
         }
 
 

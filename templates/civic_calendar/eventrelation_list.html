@@ -7,25 +7,27 @@
                 {% if user.is_authenticated %}Hello, {{ user.first_name }} {{ user.last_name }}!{% endif %}
             </div>
             <div class="panel-body">
-                <a href="{% url 'create' %}">Add a meeting</a>.
+                <a href="{% url 'create' %}">Add a meeting</a>
             </div>
         </div>
         
         <div class="list-group">
         {% for eventrelation in object_list %}
             <a class="list-group-item" href="{% url 'update' eventrelation.object_id %}">
+                <p>Click to edit</p>
                 <h4 class="list-group-item-heading">{{ eventrelation.content_object }}</h4>
-                <p class="list-group-item-text">{{ eventrelation.content_object.entity.name }}</p>
-                <p class="list-group-item-text">{{ eventrelation.content_object.start }}</p>
-                <p class="list-group-item-text">{{ eventrelation.content_object.location.name }}</p>
-                <p class="list-group-item-text">{{ eventrelation.content_object.location.address }}</p>
-                <p class="list-group-item-text">{{ eventrelation.content_object.location.city }}</p>
-                <p class="list-group-item-text">{{ eventrelation.content_object.agenda }}</p>
-                <p class="list-group-item-text">{{ eventrelation.content_object.website }}</p>
-                <p class="list-group-item-text">{{ eventrelation.content_object.contact_email }}</p>
-                <p class="list-group-item-text">{{ eventrelation.content_object.contact_phone }}</p>
+                <p class="list-group-item-text"><b>Entity:</b> {{ eventrelation.content_object.entity.name }}</p>
+                <p class="list-group-item-text"><b>Start:</b> {{ eventrelation.content_object.start }}</p>
+                <p class="list-group-item-text"><b>Name:</b> {{ eventrelation.content_object.location.name }}</p>
+                <p class="list-group-item-text"><b>Address:</b> {{ eventrelation.content_object.location.address }}</p>
+                <p class="list-group-item-text"><b>City:</b> {{ eventrelation.content_object.location.city }}</p>
+                <p class="list-group-item-text"><b>Agenda:</b> {{ eventrelation.content_object.agenda }}</p>
+                <p class="list-group-item-text"><b>Website:</b> {{ eventrelation.content_object.website }}</p>
+                <p class="list-group-item-text"><b>Contact email:</b> {{ eventrelation.content_object.contact_email }}</p>
+                <p class="list-group-item-text"><b>Contact phone:</b> {{ eventrelation.content_object.contact_phone }}</p>
                 <p class="list-group-item-text">
-                {{ eventrelation.event.creator.first_name }} {{ eventrelation.event.creator.last_name }}</p>
+                    <b>Entered by:</b> {{ eventrelation.event.creator.first_name }} {{ eventrelation.event.creator.last_name }}
+                </p>
             </a>
             <a class="list-group-item" href="{% url 'delete' eventrelation.id %}">Delete</a>
         {% endfor %}
