@@ -1,6 +1,6 @@
-# How to: Use _The Register-Guard_ civic calendar page
+## How to use _The Register-Guard_ civic calendar page
 
-1. Go to http://local.registerguard.com/civic/ and log in with your supplied `Username` and `Password`.
+1. Go to [http://local.registerguard.com/civic/](http://local.registerguard.com/civic/) and log in with your supplied `Username` and `Password`.
 1. Add, edit or delete entries as needed and `Save`.
 
 ### Some things to note:
