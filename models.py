@@ -54,7 +54,7 @@ class Location(models.Model):
     lng = models.FloatField(blank=True, null=True)
 
     def __str__(self):
-        return u'({}) {}'.format(self.city, self.name)
+        return u'({}) {}, {}'.format(self.city, self.name, self.address)
 
 
 @python_2_unicode_compatible
