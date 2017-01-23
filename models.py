@@ -47,7 +47,7 @@ class Location(models.Model):
     # geolocate on save:
     # http://stackoverflow.com/questions/2755027/geocoding-an-address-on-form-submission
     # ... or geopy?
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=255, blank=True)
     lat = models.FloatField(blank=True, null=True)
