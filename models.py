@@ -34,12 +34,12 @@ class Entity(models.Model):
     owner = models.ForeignKey(User, null=True)
     jurisdiction = models.ForeignKey(Jurisdiction)
 
-    class Meta:
-        verbose_name_plural = 'entities'
-        unique_together = (('name', 'jurisdiction'),)
-
     def __str__(self):
         return '({0}) {1}'.format(self.jurisdiction.name, self.name)
+
+    class Meta:
+        verbose_name_plural = 'entities'
+        unique_together = (('name', 'jurisdiction',),)
 
 
 @python_2_unicode_compatible
@@ -56,6 +56,8 @@ class Location(models.Model):
     def __str__(self):
         return u'({}) {}, {}'.format(self.city, self.name, self.address)
 
+    class Meta:
+        unique_together = (('name', 'city',),)
 
 @python_2_unicode_compatible
 class Meeting(models.Model):
