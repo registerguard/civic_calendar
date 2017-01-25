@@ -57,7 +57,7 @@ class Location(models.Model):
         return u'({}) {}, {}'.format(self.city, self.name, self.address)
 
     class Meta:
-        unique_together = (('name', 'city',),)
+        unique_together = (('name', 'address', 'city',),)
 
 @python_2_unicode_compatible
 class Meeting(models.Model):
