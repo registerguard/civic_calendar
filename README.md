@@ -5,3 +5,5 @@
 Authenticated web entry form of public meetings for Lane County agencies. Outputs web pages and Adobe InDesign formatted text. Powered by [django-scheduler](https://github.com/llazzaro/django-scheduler).
 
 ***Note:*** Needs to have a `Calendar` named 'civic'.
+
+How To [documentation](http://dev.registerguard.com/civic_calendar/).
