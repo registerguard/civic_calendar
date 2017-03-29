@@ -37,6 +37,9 @@ class SchedulerSavingMixin(object):
 class MeetingCreateView(LoginRequiredMixin, CreateView):
     model = Meeting
     form_class = MeetingCreateViewForm
+    # if no success_url, defaults to model object get_absolute_url(), if
+    # available https://docs.djangoproject.com/en/1.10/topics/class-based-views/generic-editing/#model-forms
+    success_url = reverse_lazy('meeting-list')
 
     # passing request.user to MeetingCreateViewForm
     def get_form_kwargs(self):

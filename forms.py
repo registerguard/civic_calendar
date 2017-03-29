@@ -20,25 +20,18 @@ class MeetingCreateViewForm(forms.ModelForm):
         self.fields['entity'].queryset = Entity.objects.filter(owner=owner).order_by('name')
         self.fields['location'].queryset = Location.objects.order_by('name')
 
-    # def __init__(self, *args, **kwargs):
-    #     self.request = kwargs.pop('request', None)
-    #     super(MeetingCreateViewForm, self).__init__(*args, **kwargs)
-
     class Meta:
         model = Meeting
         fields = '__all__'
         widgets = {
             'start': CalendarDateTimeWidget(),
-            'agenda': forms.Textarea(attrs={
-                'maxlength': '350',
-            }),
+            'agenda': forms.Textarea(
+                attrs={
+                    'maxlength': '350',
+                }
+            ),
         }
         help_texts = {
             'start': _('<div class="alert alert-info"><b>Note:</b> Use military time.</div>'),
             'agenda': _('<div class="alert alert-info"><b>Note:</b> 350-character limit for Agenda description.</div>'),
         }
-
-
-    # def save(self, creator, *args, **kwargs):
-    #     f = super(MeetingCreateViewForm, self).save(creator, *args, **kwargs)
-    #     return f
