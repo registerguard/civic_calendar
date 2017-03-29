@@ -29,9 +29,13 @@ class MeetingCreateViewForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'start': CalendarDateTimeWidget(),
+            'agenda': forms.Textarea(attrs={
+                'maxlength': '350',
+            }),
         }
         help_texts = {
             'start': _('<div class="alert alert-info"><b>Note:</b> Use military time.</div>'),
+            'agenda': _('<div class="alert alert-info"><b>Note:</b> 350-character limit for Agenda description.</div>'),
         }
 
 
