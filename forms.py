@@ -1,4 +1,6 @@
 from django import forms
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, ButtonHolder, Submit
 from django.utils.translation import ugettext_lazy as _
 from .models import Meeting, Entity, Location
 
@@ -20,6 +22,18 @@ class MeetingCreateViewForm(forms.ModelForm):
         self.fields['entity'].queryset = Entity.objects.filter(owner=owner).order_by('name')
         self.fields['location'].queryset = Location.objects.order_by('name')
 
+    helper = FormHelper()
+    helper.form_class = 'form-horizontal'
+    helper.label_class = 'col-lg-2'
+    helper.field_class = 'col-lg-8'
+    helper.form_action = 'post'
+    helper.form_action = 'create'
+
+    helper.error_text_inline = True
+    helper.help_text_inline = True
+
+    helper.add_input(Submit('submit', 'Submit'))
+
     class Meta:
         model = Meeting
         fields = '__all__'
@@ -27,11 +41,11 @@ class MeetingCreateViewForm(forms.ModelForm):
             'start': CalendarDateTimeWidget(),
             'agenda': forms.Textarea(
                 attrs={
-                    'maxlength': '350',
+                    'maxlength': '500',
                 }
             ),
         }
         help_texts = {
             'start': _('<div class="alert alert-info"><b>Note:</b> Use military time.</div>'),
-            'agenda': _('<div class="alert alert-info"><b>Note:</b> 350-character limit for Agenda description.</div>'),
+            'agenda': _('<div class="alert alert-info"><b>Note:</b> 500-character limit for Agenda description.</div>'),
         }
