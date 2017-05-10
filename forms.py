@@ -1,6 +1,7 @@
 from django import forms
+from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, ButtonHolder, Submit
+from crispy_forms.layout import Layout, Fieldset, Submit
 from django.utils.translation import ugettext_lazy as _
 from .models import Meeting, Entity, Location
 
@@ -22,17 +23,28 @@ class MeetingCreateViewForm(forms.ModelForm):
         self.fields['entity'].queryset = Entity.objects.filter(owner=owner).order_by('name')
         self.fields['location'].queryset = Location.objects.order_by('name')
 
-    helper = FormHelper()
-    helper.form_class = 'form-horizontal'
-    helper.label_class = 'col-lg-2'
-    helper.field_class = 'col-lg-8'
-    helper.form_action = 'post'
-    helper.form_action = 'create'
-
-    helper.error_text_inline = True
-    helper.help_text_inline = True
-
-    helper.add_input(Submit('submit', 'Submit'))
+        # http://tothinkornottothink.com/post/7157151391/be-careful-how-you-use-static-variables-in-forms
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                'Create a meeting',
+                'entity',
+                'start',
+                'location',
+                'agenda',
+                'contact_phone',
+                'contact_email',
+                'website',
+            ),
+            FormActions(
+                Submit('submit', 'Submit',),
+            )
+        )
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-8'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'create'
 
     class Meta:
         model = Meeting
