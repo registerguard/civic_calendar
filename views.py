@@ -72,6 +72,7 @@ class MeetingCreateView(LoginRequiredMixin, CreateView):
 class MeetingUpdateView(LoginRequiredMixin, UpdateView):
     model = Meeting
     form_class = MeetingCreateViewForm
+    success_url = reverse_lazy('meeting-list')
 
     def get_form_kwargs(self):
         kwargs = super(MeetingUpdateView, self).get_form_kwargs()

@@ -37,14 +37,15 @@ class MeetingCreateViewForm(forms.ModelForm):
                 'website',
             ),
             FormActions(
-                Submit('submit', 'Submit',),
+                Submit('submit', 'Save',),
             )
         )
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-lg-2'
         self.helper.field_class = 'col-lg-8'
         self.helper.form_method = 'post'
-        self.helper.form_action = 'create'
+        # Don't hardwire form to one URL! Then we can use same form to create or
+        # update. i.e., don't set "self.helper.form_action = 'create'"
 
     class Meta:
         model = Meeting
