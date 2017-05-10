@@ -1,7 +1,7 @@
 from django import forms
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, Submit
+from crispy_forms.layout import Field, Fieldset, Layout, Submit
 from django.utils.translation import ugettext_lazy as _
 from .models import Meeting, Entity, Location
 
@@ -61,3 +61,7 @@ class MeetingCreateViewForm(forms.ModelForm):
             'start': _('<div class="alert alert-info"><b>Note:</b> Use military time.</div>'),
             'agenda': _('<div class="alert alert-info"><b>Note:</b> 500-character limit for Agenda description.</div>'),
         }
+    # https://docs.djangoproject.com/en/1.10/ref/forms/api/#django.forms.Form.use_required_attribute
+    # Removes HTML5 standalone 'required' attribute from form tags as client-side form validation was
+    # halting the POST/server-side validation & subsequent form.errors.
+    use_required_attribute = False
