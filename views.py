@@ -154,12 +154,13 @@ class OccurrenceListView(ListView):
         # http://stackoverflow.com/questions/2412770/good-ways-to-sort-a-queryset-django
         queryset = EventRelation.objects.prefetch_related('content_object__entity__jurisdiction').filter(event_id__in=event_list)
         ordered = sorted(queryset, key=operator.attrgetter('content_object.entity.jurisdiction.name', 'event.start'))
+        return ordered
 
+    def render_to_response(self, context, **response_kwargs):
         request = self.request
         t = loader.get_template('civic_calendar/occurrence_list.html')
-        c = RequestContext(request, {'event_relation_list': ordered} )
-        data = t.render(c)
-        data = data.encode('utf-16-le')
+        c = RequestContext(request, {'event_relation_list': self.get_queryset()} )
+        data = t.render(c).encode('utf-16-le')
         r = HttpResponse(data, content_type='text/plain')
         r['Content-Disposition'] = 'attachment; filename=cr.calendar.txt'
         return r
