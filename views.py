@@ -3,8 +3,9 @@
 from braces.views import LoginRequiredMixin
 
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404
+from django.template import loader, Context, RequestContext, Template
 from django.views.generic import CreateView, UpdateView, DetailView, ListView, \
     DeleteView
 from schedule.models import Calendar, Event, EventRelation
@@ -153,13 +154,12 @@ class OccurrenceListView(ListView):
         # http://stackoverflow.com/questions/2412770/good-ways-to-sort-a-queryset-django
         queryset = EventRelation.objects.prefetch_related('content_object__entity__jurisdiction').filter(event_id__in=event_list)
         ordered = sorted(queryset, key=operator.attrgetter('content_object.entity.jurisdiction.name', 'event.start'))
-        return ordered
 
-    # def get_context_data(self):
-    #     jurisdiction_set = set()
-    #     for jurisdiction in queryset:
-    #         jurisdiction_set.add(jurisdiction.content_object.entity.jurisdiction)
-    #     jurisdiction_list = list(jurisdiction_set)
-    #     context = super(OccurrenceListView, self).get_context_data(**kwargs)
-    #     context['jurisdiction_list'] = jurisdiction_list
-    #     return context
+        request = self.request
+        t = loader.get_template('civic_calendar/occurrence_list.html')
+        c = RequestContext(request, {'event_relation_list': ordered} )
+        data = t.render(c)
+        data = data.encode('utf-16-le')
+        r = HttpResponse(data, content_type='text/plain')
+        r['Content-Disposition'] = 'attachment; filename=cr.calendar.txt'
+        return r
