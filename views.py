@@ -158,9 +158,25 @@ class OccurrenceListView(ListView):
 
     def render_to_response(self, context, **response_kwargs):
         request = self.request
+
+        if request.META['HTTP_USER_AGENT'].count('Macintosh'):
+            os = 'MAC'
+        else:
+            os = 'WIN'
+
+
         t = loader.get_template('civic_calendar/occurrence_list.html')
-        c = RequestContext(request, {'event_relation_list': self.get_queryset()} )
-        data = t.render(c).encode('utf-16-le')
+        c = RequestContext(request, {
+            'event_relation_list': self.get_queryset(),
+            'os': os,
+            }
+        )
+        data = t.render(c)
+
+        if os == 'WIN':
+            data = data.replace(u'\n', u'\r\n') # Convert Unix line endings to Windows
+
+        data = data.encode('utf-16-le')
         r = HttpResponse(data, content_type='text/plain')
         r['Content-Disposition'] = 'attachment; filename=cr.calendar.txt'
         return r
