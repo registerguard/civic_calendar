@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 
 # standard library
 import datetime
+import pytz
 
 # third-party
 from schedule.models import Event, EventRelation, Calendar
@@ -74,7 +75,12 @@ class Meeting(models.Model):
     event_relation = GenericRelation(EventRelation)
 
     def __str__(self):
-        return u'({0}) {1}, {2} meeting'.format(self.entity.jurisdiction.name, self.entity.name, self.start.strftime('%A (%Y-%m-%d)'))
+        # convert db UTC time to PT for presentation
+        time_utc = self.start
+        timezone_pt = pytz.timezone('America/Los_Angeles')
+        time_local = time_utc.astimezone(timezone_pt)
+
+        return u'({0}) {1}, {2} meeting'.format(self.entity.jurisdiction.name, self.entity.name, time_local.strftime('%A (%Y-%m-%d)'))
 
     def get_absolute_url(self):
         # page 109
