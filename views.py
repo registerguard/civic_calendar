@@ -142,7 +142,7 @@ class OccurrenceListView(ListView):
 
     # Add relevant Jurisdictions to response context
     def get_queryset(self):
-        today_and_tomorrow = datetime.datetime.today()
+        today_and_tomorrow = datetime.datetime.now()
         my_events = Event.objects.all()
         upcoming = Period(my_events, today_and_tomorrow, today_and_tomorrow+datetime.timedelta(days=2))
         occurrence_list = upcoming.get_occurrences()
