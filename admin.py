@@ -14,7 +14,13 @@ class MeetingAdmin(admin.ModelAdmin):
     list_editable = ('start',)
 
 
+class EntityAdmin(admin.ModelAdmin):
+    list_display = ('name', 'owner', 'jurisdiction',)
+    list_editable = ('owner', 'jurisdiction',)
+    ordering = ('name',)
+
+
 admin.site.register(Jurisdiction)
 admin.site.register(Meeting, MeetingAdmin)
-admin.site.register(Entity)
+admin.site.register(Entity, EntityAdmin)
 admin.site.register(Location, LocationAdmin)
