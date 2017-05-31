@@ -40,7 +40,7 @@ class Entity(models.Model):
 
     class Meta:
         verbose_name_plural = 'entities'
-        unique_together = (('name', 'jurisdiction',),)
+        unique_together = (('name', 'owner', 'jurisdiction',),)
 
 
 @python_2_unicode_compatible
