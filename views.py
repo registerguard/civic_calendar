@@ -54,7 +54,7 @@ class MeetingCreateView(LoginRequiredMixin, CreateView):
         event = Event(
             start=meeting.start,
             end=end,
-            title='{0} meeting'.format(meeting.entity.name),
+            title=u'{0} meeting'.format(meeting.entity.name),
             description=meeting.agenda,
             creator=self.request.user,
         )
@@ -142,9 +142,9 @@ class OccurrenceListView(ListView):
 
     # Add relevant Jurisdictions to response context
     def get_queryset(self):
-        today_and_tomorrow = datetime.datetime.now()
+        tomorrow_and_day_after = datetime.datetime.now()+datetime.timedelta(days=1)
         my_events = Event.objects.all()
-        upcoming = Period(my_events, today_and_tomorrow, today_and_tomorrow+datetime.timedelta(days=2))
+        upcoming = Period(my_events, tomorrow_and_day_after, tomorrow_and_day_after+datetime.timedelta(days=2))
         occurrence_list = upcoming.get_occurrences()
         event_list = [ occurrence.event for occurrence in occurrence_list ]
         # figure out an order_by based on content_object.entity.jurisdiction.name
