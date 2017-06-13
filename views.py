@@ -154,6 +154,11 @@ class OccurrenceListView(ListView):
         # http://stackoverflow.com/questions/2412770/good-ways-to-sort-a-queryset-django
         queryset = EventRelation.objects.prefetch_related('content_object__entity__jurisdiction').filter(event_id__in=event_list)
         ordered = sorted(queryset, key=operator.attrgetter('content_object.entity.jurisdiction.name', 'event.start'))
+
+        for event_item in ordered:
+            # replace u'\r\n' with u' ' in agenda text
+            event_item.content_object.agenda = event_item.content_object.agenda.replace(u'\r\n', u' ')
+
         return ordered
 
     def render_to_response(self, context, **response_kwargs):
