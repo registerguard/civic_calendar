@@ -60,7 +60,7 @@ class MeetingCreateViewForm(forms.ModelForm):
         }
         help_texts = {
             'start': _('<div class="alert alert-info"><b>Note:</b> Use military time: e.g., 1 p.m. is 13:00.</div>'),
-            'agenda': _('<div class="alert alert-info"><b>Note:</b> 500-character limit for Agenda description.</div>'),
+            'agenda': _('<div class="alert alert-info">Brief description of item(s) on agenda. (See the Calendar item in <i>The Register-Guard</i> City/Region section for examples.)<br><b>Note:</b> 500-character limit.</div>'),
         }
     # https://docs.djangoproject.com/en/1.10/ref/forms/api/#django.forms.Form.use_required_attribute
     # Removes HTML5 standalone 'required' attribute from form tags as client-side form validation was
