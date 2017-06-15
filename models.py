@@ -39,8 +39,8 @@ class Entity(models.Model):
         return '({0}) {1}'.format(self.jurisdiction.name, self.name)
 
     class Meta:
-        verbose_name_plural = 'entities'
         unique_together = (('name', 'owner', 'jurisdiction',),)
+        verbose_name_plural = 'entities'
 
 
 @python_2_unicode_compatible
