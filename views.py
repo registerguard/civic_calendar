@@ -191,8 +191,8 @@ class OccurrenceListView(ListView):
         t = loader.get_template('civic_calendar/occurrence_list.html')
         c = RequestContext(
             request, {
-            'event_relation_list': self.get_queryset(),
-            'os': client_os,
+                'event_relation_list': self.get_queryset(),
+                'os': client_os,
             }
         )
         data = t.render(c)
