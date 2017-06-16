@@ -1,20 +1,20 @@
 # https://docs.djangoproject.com/en/1.10/topics/class-based-views/generic-editing/#s-models-and-request-user
 # http://django.cowhite.com/blog/adding-and-editing-model-objects-using-django-class-based-views-and-forms/
+import datetime
+import operator
+import pytz
+
 from braces.views import LoginRequiredMixin
 
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import get_object_or_404
-from django.template import loader, Context, RequestContext, Template
+from django.template import loader, RequestContext
 from django.views.generic import CreateView, UpdateView, DetailView, ListView, \
     DeleteView
 from schedule.models import Calendar, Event, EventRelation
 from schedule.periods import Period
 from .forms import MeetingCreateViewForm
-from .models import Jurisdiction, Meeting
-
-import datetime
-import operator
+from .models import Meeting
 
 
 class SchedulerSavingMixin(object):
@@ -66,7 +66,7 @@ class MeetingCreateView(LoginRequiredMixin, CreateView):
         except Calendar.DoesNotExist:
             error_msg = "Calendar object not found."
             raise Calendar.DoesNotExist(error_msg)
-            
+
         cal.events.add(event)
         return super(MeetingCreateView, self).form_valid(form)
 
@@ -111,7 +111,7 @@ class MeetingDeleteView(LoginRequiredMixin, DeleteView):
         schedule.EventRelation
         schedule.Occurrence
         schedule.Event
-        
+
         ... so just need to delete schedule.Event and civic_calendar.Meeting
     '''
     success_url = reverse_lazy('meeting-list')
@@ -142,22 +142,40 @@ class OccurrenceListView(ListView):
 
     # Add relevant Jurisdictions to response context
     def get_queryset(self):
-        tomorrow_and_day_after = datetime.datetime.now()+datetime.timedelta(days=1)
+        pacific = pytz.timezone('US/Pacific')
+        custom_date = self.request.GET.get('date', '')
+        if custom_date:
+            tomorrow_and_day_after = pacific.localize(
+                datetime.datetime.strptime(custom_date, '%Y%m%d') \
+                + datetime.timedelta(days=1)
+            )
+        else:
+            tomorrow_and_day_after = pacific.localize(
+                datetime.datetime.now().replace(hour=0, minute=0) \
+                + datetime.timedelta(days=1)
+            )
         my_events = Event.objects.all()
-        upcoming = Period(my_events, tomorrow_and_day_after, tomorrow_and_day_after+datetime.timedelta(days=2))
+        upcoming = Period(
+            my_events, tomorrow_and_day_after, tomorrow_and_day_after+datetime.timedelta(days=2)
+        )
+
         occurrence_list = upcoming.get_occurrences()
-        event_list = [ occurrence.event for occurrence in occurrence_list ]
+        event_list = [occurrence.event for occurrence in occurrence_list]
         # figure out an order_by based on content_object.entity.jurisdiction.name
         # Can't
         # But! ...
-        # ordered = sorted(queryset, key=operator.attrgetter('content_object.entity.jurisdiction.name'))
+        # ordered = sorted(queryset, key=operator. \
+        #       attrgetter('content_object.entity.jurisdiction.name'))
         # http://stackoverflow.com/questions/2412770/good-ways-to-sort-a-queryset-django
-        queryset = EventRelation.objects.prefetch_related('content_object__entity__jurisdiction').filter(event_id__in=event_list)
-        ordered = sorted(queryset, key=operator.attrgetter('content_object.entity.jurisdiction.name', 'event.start'))
+        queryset = EventRelation.objects.prefetch_related('content_object__entity__jurisdiction'). \
+            filter(event_id__in=event_list)
+        ordered = sorted(queryset, key=operator \
+            .attrgetter('content_object.entity.jurisdiction.name', 'event.start'))
 
         for event_item in ordered:
-            # replace u'\r\n' with u' ' in agenda text
-            event_item.content_object.agenda = event_item.content_object.agenda.replace(u'\r\n', u' ')
+            # replace u'\r\n' with u' ' in Agenda text
+            event_item.content_object.agenda = event_item.content_object \
+                .agenda.replace(u'\r\n', u' ')
 
         return ordered
 
@@ -165,20 +183,21 @@ class OccurrenceListView(ListView):
         request = self.request
 
         if request.META['HTTP_USER_AGENT'].count('Macintosh'):
-            os = 'MAC'
+            client_os = 'MAC'
         else:
-            os = 'WIN'
+            client_os = 'WIN'
 
 
         t = loader.get_template('civic_calendar/occurrence_list.html')
-        c = RequestContext(request, {
+        c = RequestContext(
+            request, {
             'event_relation_list': self.get_queryset(),
-            'os': os,
+            'os': client_os,
             }
         )
         data = t.render(c)
 
-        if os == 'WIN':
+        if client_os == 'WIN':
             data = data.replace(u'\n', u'\r\n') # Convert Unix line endings to Windows
 
         data = data.encode('utf-16-le')
