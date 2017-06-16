@@ -181,26 +181,42 @@ class OccurrenceListView(ListView):
 
     def render_to_response(self, context, **response_kwargs):
         request = self.request
+        meetings = self.get_queryset()
 
         if request.META['HTTP_USER_AGENT'].count('Macintosh'):
             client_os = 'MAC'
         else:
             client_os = 'WIN'
 
+        if meetings:
+            # Upcoming meetings found ... 
+            t = loader.get_template('civic_calendar/occurrence_list.html')
+            c = RequestContext(
+                request, {
+                    'event_relation_list': meetings,
+                    'os': client_os,
+                }
+            )
+            data = t.render(c)
 
-        t = loader.get_template('civic_calendar/occurrence_list.html')
-        c = RequestContext(
-            request, {
-                'event_relation_list': self.get_queryset(),
-                'os': client_os,
-            }
-        )
-        data = t.render(c)
+            if client_os == 'WIN':
+                data = data.replace(u'\n', u'\r\n') # Convert Unix line endings to Windows
 
-        if client_os == 'WIN':
-            data = data.replace(u'\n', u'\r\n') # Convert Unix line endings to Windows
+            data = data.encode('utf-16-le')
+            r = HttpResponse(data, content_type='text/plain')
+            r['Content-Disposition'] = 'attachment; filename=cr.calendar.txt'
+        else:
+            # No upcoming meetings found, so a regular web response, not a file-attachment one
+            t = loader.get_template('civic_calendar/occurrence_list_screen.html')
+            c = RequestContext(
+                request, {
+                    'event_relation_list': ['<p>No upcoming meetings found. Try again another day.</p>',],
+                    'os': client_os,
+                }
+            )
 
-        data = data.encode('utf-16-le')
-        r = HttpResponse(data, content_type='text/plain')
-        r['Content-Disposition'] = 'attachment; filename=cr.calendar.txt'
+            data = t.render(c)
+            r = HttpResponse(data, content_type='text/html')
+            r['Content-Disposition'] = 'inline'
+
         return r
