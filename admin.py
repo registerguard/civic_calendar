@@ -10,29 +10,17 @@ class LocationAdmin(admin.ModelAdmin):
 
 
 class MeetingAdmin(admin.ModelAdmin):
+    # https://stackoverflow.com/questions/43390140/django-disallowedmodeladminlookup-for-lookup-in-admin-list-filter/44665384#44665384
     list_display = ('__str__', 'start', 'created',)
     list_editable = ('start',)
-
-
-class UserAlphaSort(admin.SimpleListFilter):
-    # https://stackoverflow.com/questions/16560055/django-admin-sorting-list-filter
-    title = 'owner'
-    parameter_name = 'owner'
-
-    def lookups(self, request, model_admin):
-        qs = model_admin.get_queryset(request)
-        return [(i, j) for i, j in qs.values_list('owner', 'owner__username') \
-            .distinct().order_by('owner__username')]
-
-    def queryset(self, request, queryset):
-        if self.value():
-            return queryset.filter(owner__exact=self.value())
+    list_filter = ('event_relation__event__creator__username',)
 
 
 class EntityAdmin(admin.ModelAdmin):
+    # https://stackoverflow.com/questions/43390140/django-disallowedmodeladminlookup-for-lookup-in-admin-list-filter/44665384#44665384
     list_display = ('name', 'owner', 'jurisdiction',)
     list_editable = ('owner', 'jurisdiction',)
-    list_filter = (UserAlphaSort,)
+    list_filter = ('owner__username',)
     ordering = ('name',)
 
 
