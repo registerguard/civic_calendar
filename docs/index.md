@@ -5,7 +5,6 @@
 1. Go to [http://local.registerguard.com/civic/](http://local.registerguard.com/civic/) and log in with your supplied `Username` and `Password`.
 1. Add (1.), edit (2.) or delete (3.) entries as needed and `Save`.
 
-### Some things to note:
+### Note:
 * If you need a meeting `Location` added, email `webeditors@registerguard.com` with the name & address of the location.
-* If you need to change your password, just click the `Change Password` link (4.) in the upper righthand corner of any page.
-* If you enter contact phone, email and a website, only one will be used in print, in the following order: phone, website, email.
+* You are encouraged to change your password; do so by clicking the `Change Password` link 4.) in the upper righthand corner of any page.
