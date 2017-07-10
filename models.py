@@ -48,7 +48,7 @@ class Location(models.Model):
     # geolocate on save:
     # http://stackoverflow.com/questions/2755027/geocoding-an-address-on-form-submission
     # ... or geopy?
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=True)
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=255, blank=True)
     lat = models.FloatField(blank=True, null=True)
@@ -85,6 +85,9 @@ class Meeting(models.Model):
     def get_absolute_url(self):
         # page 109
         return reverse('meeting-detail', kwargs={'pk': self.pk})
+
+    def contact_string(self):
+        pass
 
     # def save(self, *args, **kwargs):
     #     new_meeting = False
