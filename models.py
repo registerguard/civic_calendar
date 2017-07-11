@@ -87,7 +87,20 @@ class Meeting(models.Model):
         return reverse('meeting-detail', kwargs={'pk': self.pk})
 
     def contact_string(self):
-        pass
+        contact_list = [
+            getattr(self, 'contact_phone', None),
+            getattr(self, 'contact_email', None),
+            getattr(self, 'website', None),
+        ]
+        contact_list = filter(None, contact_list)
+        contact_list_len = len(filter(None, contact_list))
+        if contact_list_len == 1:
+            return contact_list[0]
+        elif contact_list_len == 2:
+            return u'{0} or {1}'.format(contact_list[0], contact_list[1])
+        else:
+            return u'{0}, {1} or {2}'.format(contact_list[0], contact_list[1], contact_list[2])
+
 
     # def save(self, *args, **kwargs):
     #     new_meeting = False
