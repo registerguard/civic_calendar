@@ -95,12 +95,11 @@ class Meeting(models.Model):
         contact_list = filter(None, contact_list)
         contact_list_len = len(filter(None, contact_list))
         if contact_list_len == 1:
-            return contact_list[0]
+            return u' {0}.'.format(contact_list[0])
         elif contact_list_len == 2:
-            return u'{0} or {1}'.format(contact_list[0], contact_list[1])
+            return u' {0} or {1}.'.format(*contact_list)
         else:
-            return u'{0}, {1} or {2}'.format(contact_list[0], contact_list[1], contact_list[2])
-
+            return u' {0}, {1} or {2}.'.format(*contact_list)
 
     # def save(self, *args, **kwargs):
     #     new_meeting = False
