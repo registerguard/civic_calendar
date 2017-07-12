@@ -11,6 +11,11 @@
 		#div_id_start .controls {
 			position: relative;
 		}
+
+		/* BS3 hack to center calendar agenda example image */
+		.img-responsive {
+			margin: 0 auto;
+		}
 	</style>
 
 	<div class="container" role="main">
@@ -28,6 +33,7 @@
 
 		{% crispy form %}
 
+		<img class="img-responsive" id="calendar-examples" src="{% static 'images/calendar-examples.png' %}" alt="agenda examples">
 	</div> <!-- /.container -->
 {% endblock content %}
 
