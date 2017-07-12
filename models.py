@@ -65,7 +65,7 @@ class Meeting(models.Model):
     entity = models.ForeignKey(Entity, on_delete=models.CASCADE)
     start = models.DateTimeField(_("meeting start date and time"))
     location = models.ForeignKey(Location)
-    agenda = models.TextField(blank=True)
+    agenda = models.TextField(_("Agenda (optional)"), blank=True)
     contact_phone = models.CharField(max_length=64, blank=True)
     contact_email = models.EmailField(blank=True)
     website = models.CharField(max_length=256, blank=True)
