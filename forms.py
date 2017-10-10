@@ -7,6 +7,9 @@ from .models import Meeting, Entity, Location
 
 class CalendarDateTimeWidget(forms.DateTimeInput):
     class Media:
+        css = {
+            'all': ('css/bootstrap-datetimepicker.min.css',)
+        }
         js = (
             'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.0/moment.min.js',
             'js/bootstrap-datetimepicker.min.js',
@@ -46,6 +49,19 @@ class MeetingCreateViewForm(forms.ModelForm):
         self.helper.form_method = 'post'
         # Don't hardwire form to one URL! Then we can use same form to create or
         # update. i.e., don't set "self.helper.form_action = 'create'"
+
+    def clean(self):
+        cleaned_data = super(MeetingCreateViewForm, self).clean()
+        contact_email = cleaned_data.get('contact_email')
+        contact_phone = cleaned_data.get('contact_phone')
+        website = cleaned_data.get('website')
+
+        if not contact_email and not contact_phone and not website:
+            raise forms.ValidationError(
+                '''You must fill in at least one of the three fields below:
+                "Contact phone," "Contact email" or "Website."'''
+            )
+
 
     class Meta:
         model = Meeting

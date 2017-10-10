@@ -1,0 +1,7 @@
+<html>
+    <body>
+    {% for eventrelation in object_list %}
+        <p>{{ eventrelation.content_object.entity.name }} {{ eventrelation.start }}</p>
+    {% endfor %}
+    </body>
+</html>

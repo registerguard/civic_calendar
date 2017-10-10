@@ -70,6 +70,7 @@ class MeetingCreateView(LoginRequiredMixin, CreateView):
         cal.events.add(event)
         return super(MeetingCreateView, self).form_valid(form)
 
+
 class MeetingUpdateView(LoginRequiredMixin, UpdateView):
     model = Meeting
     form_class = MeetingCreateViewForm
@@ -88,6 +89,7 @@ class MeetingUpdateView(LoginRequiredMixin, UpdateView):
         event.description = form.instance.agenda
         event.save()
         return super(MeetingUpdateView, self).form_valid(form)
+
 
 class MeetingListView(LoginRequiredMixin, ListView):
     '''
@@ -220,3 +222,21 @@ class OccurrenceListView(ListView):
             r['Content-Disposition'] = 'inline'
 
         return r
+
+
+class WebMeetingListView(ListView):
+    '''
+    Provide a Web view listing for public consumption.
+    '''
+    template_name = 'civic_calendar/meeting_list.html'
+    def get_queryset(self):
+        pacific = pytz.timezone('US/Pacific')
+        my_events = Event.objects.all()
+        my_today = pacific.localize(
+            datetime.datetime.now().replace(hour=0, minute=0) \
+        )
+        upcoming = Period(
+            my_events, my_today, my_today+datetime.timedelta(days=30)
+        )
+        event_id_list = [occurrence.event_id for occurrence in upcoming.get_occurrences()]
+        return EventRelation.objects.filter(event_id__in=event_id_list)
