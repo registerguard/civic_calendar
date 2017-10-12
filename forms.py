@@ -64,10 +64,15 @@ class MeetingCreateViewForm(forms.ModelForm):
                 "Contact phone," "Contact email" or "Website."'''
             )
 
-        if Meeting.objects.filter(start=start, location=location).exists():
+        try:
+            already_exists = Meeting.objects.get(start=start, location=location)
             raise forms.ValidationError(
-                '''An event at this time and place already exists.'''
+                '''An event at this time and place already exists: {0}.'''.format(
+                    already_exists.__str__()
+                )
             )
+        except Meeting.DoesNotExist:
+            already_exists = None
 
     class Meta:
         model = Meeting
