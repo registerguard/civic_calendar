@@ -67,7 +67,6 @@ class MeetingCreateViewForm(forms.ModelForm):
 
         try:
             already_exists = Meeting.objects.exclude(id=meeting_id).get(start=start, location=location)
-            print 'meeting_id:', meeting_id
             raise forms.ValidationError(
                 '''An event at this time and place already exists: {0}.'''.format(
                     already_exists.__str__()
