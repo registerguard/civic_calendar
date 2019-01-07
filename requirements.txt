@@ -1,5 +1,5 @@
-Django==1.10.1
-django-annoying==0.10.1
+Django==1.11.18
+django-annoying==0.10.8
 django-braces==1.9.0
 django-crispy-forms==1.6.0
 django-scheduler==0.8
